@@ -1,6 +1,6 @@
 {
-    "name": "vicentesuc/ticketasagt",
-    "description": "TicketAsaGT support for omnipay payment processing library",
+    "name": "vincsis/ticketasa",
+    "description": "Ticketasa support for omnipay payment processing library",
     "type": "library",
     "require": {
 	"php": "^7.2",
