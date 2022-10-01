@@ -31,20 +31,15 @@ class Gateway extends AbstractGateway implements ParametersInterface
         return $this->createRequest("\Omnipay\Ticketasa\Message\Purchase3DS", $options);
     }
 
-    public function setNotifyUrl($url)
+    public function setNotifyURL($url)
     {
         //$this->setReturnUrl($url);
-        return $this->setParameter(Constants::CONFIG_KEY_MERCHANT_RESPONSE_URL, $url);
+        return $this->setParameter(Constants::CONFIG_KEY_NOTIFY_URL, $url);
     }
 
-    public function getNotifyUrl()
+    public function getNotifyURL()
     {
-        return $this->getParameter(Constants::CONFIG_KEY_MERCHANT_RESPONSE_URL);
-    }
-
-    public function payment(array $options = []): \Omnipay\Common\Message\AbstractRequest
-    {
-        return $this->createRequest("\Omnipay\TicketAsaGt\Message\Payment3DS", $options);
+        return $this->getParameter(Constants::CONFIG_KEY_NOTIFY_URL);
     }
 
 
@@ -68,10 +63,6 @@ class Gateway extends AbstractGateway implements ParametersInterface
         return $this->getParameter(Constants::CONFIG_KEY_PWTPWD);
     }
 
-    public function setDiscount($value)
-    {
-        return $this->setParameter(Constants::USE_DISCOUNT_FORM, $value);
-    }
 
 
     public function setOrderNumberPrefix($value)
@@ -93,5 +84,16 @@ class Gateway extends AbstractGateway implements ParametersInterface
     {
         return $this->getParameter(Constants::GATEWAY_ORDER_IDENTIFIER_AUTOGEN);
     }
+
+    public function setDiscount($value)
+    {
+        return $this->setParameter(Constants::CONFIG_APPLY_DISCOUNT, $value);
+    }
+
+    public function getDiscount()
+    {
+        return $this->getParameter(Constants::CONFIG_APPLY_DISCOUNT);
+    }
+
 
 }

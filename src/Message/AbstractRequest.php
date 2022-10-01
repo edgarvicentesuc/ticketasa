@@ -2,6 +2,7 @@
 
 namespace Omnipay\Ticketasa\Message;
 
+use Omnipay\Ticketasa\Support\Cryptor;
 use Omnipay\Ticketasa\Support\ParametersInterface;
 use Omnipay\Ticketasa\Constants;
 use Omnipay\Ticketasa\Exception\GatewayHTTPException;
@@ -24,9 +25,16 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     public function sendData($data)
     {
-        print_r("Llego a send data");
-        print_r($this-data);
+        $query = http_build_query($data);
+        $encripted = Cryptor::encrypt(http_build_query($data));
 
+        // if the test mode is on then use UAT link else link prod with droplet
+        //if discount is true redirect to discount form else redirect to normal
+        $link = ($this->getTestMode() ? Constants::PLATFORM_TA_UAT : Constants::PLATFORM_TA_PROD)
+            . '/' . ($this->getDiscount() ? "discount" : "normal") . "?data=" . $encripted;
+
+        //redirecting using javascript
+        echo "<script type='text/javascript'>window.open('" . $link . "', '_parent')</script>";
     }
 
     public function setPWTId($PWTID)
@@ -122,5 +130,16 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
         // Output the 36 character UUID.
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+    }
+
+
+    public function setDiscount($value)
+    {
+        return $this->setParameter(Constants::CONFIG_APPLY_DISCOUNT, $value);
+    }
+
+    public function getDiscount()
+    {
+        return $this->getParameter(Constants::CONFIG_APPLY_DISCOUNT);
     }
 }

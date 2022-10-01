@@ -11,4 +11,8 @@ interface ParametersInterface
     public function setPWTPwd($PWD);
 
     public function getPWTPwd();
+
+    public function setDiscount($value);
+
+    public function getDiscount();
 }
