@@ -2,7 +2,7 @@
 
 namespace Omnipay\Ticketasa;
 
-use Omnipay\Ticketasa\Constants;
+
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\Http\ClientInterface;
@@ -21,14 +21,23 @@ class Gateway extends AbstractGateway implements ParametersInterface
         return Constants::DRIVER_NAME;
     }
 
+    /**
+     * @param array $options
+     * @return \Omnipay\Common\Message\AbstractRequest
+     */
+    public function purchase(array $options = []): \Omnipay\Common\Message\AbstractRequest
+    {
 
-    public function setNotifyURL($url)
+        return $this->createRequest("\Omnipay\Ticketasa\Message\Purchase3DS", $options);
+    }
+
+    public function setNotifyUrl($url)
     {
         //$this->setReturnUrl($url);
         return $this->setParameter(Constants::CONFIG_KEY_MERCHANT_RESPONSE_URL, $url);
     }
 
-    public function getNotifyURL()
+    public function getNotifyUrl()
     {
         return $this->getParameter(Constants::CONFIG_KEY_MERCHANT_RESPONSE_URL);
     }
@@ -84,7 +93,5 @@ class Gateway extends AbstractGateway implements ParametersInterface
     {
         return $this->getParameter(Constants::GATEWAY_ORDER_IDENTIFIER_AUTOGEN);
     }
-
-
 
 }

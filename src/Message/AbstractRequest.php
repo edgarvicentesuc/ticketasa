@@ -24,6 +24,8 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     public function sendData($data)
     {
+        print_r("Llego a send data");
+        print_r($this-data);
 
     }
 
