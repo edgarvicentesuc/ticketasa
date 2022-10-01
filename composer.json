@@ -1,0 +1,22 @@
+{
+    "name": "vicentesuc/ticketasagt",
+    "description": "TicketAsaGT support for omnipay payment processing library",
+    "type": "library",
+    "require": {
+	"php": "^7.2",
+        "omnipay/common": "^3",
+	"league/iso3166": "~2.1.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Omnipay\\Ticketasa\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "vicente suc - PEOPLE APPS"
+        }
+    ],
+    "minimum-stability": "dev"
+}
