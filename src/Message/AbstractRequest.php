@@ -25,15 +25,15 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     public function sendData($data)
     {
-        $query = http_build_query($data);
-        $encripted = Cryptor::encrypt(http_build_query($data));
 
-        // if the test mode is on then use UAT link else link prod with droplet
-        //if discount is true redirect to discount form else redirect to normal
+        $encripted = Cryptor::encrypt(json_encode($data),$this->getPWTPwd());
+
+//         if the test mode is on then use UAT link else link prod with droplet
+  //      if discount is true redirect to discount form else redirect to normal
         $link = ($this->getTestMode() ? Constants::PLATFORM_TA_UAT : Constants::PLATFORM_TA_PROD)
             . '/' . ($this->getDiscount() ? "discount" : "normal") . "?data=" . $encripted;
 
-        //redirecting using javascript
+    //    redirecting using javascript
         echo "<script type='text/javascript'>window.open('" . $link . "', '_parent')</script>";
     }
 
@@ -142,4 +142,5 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     {
         return $this->getParameter(Constants::CONFIG_APPLY_DISCOUNT);
     }
+
 }

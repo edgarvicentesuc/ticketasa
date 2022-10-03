@@ -10,32 +10,30 @@ class Cryptor
     const password_shuffled = "";
 
 
-    public static function encrypt($plaintext)
+    public static function encrypt($plaintext,$key)
     {
-        //$plaintext = 'My secret message 1234';
-        $password = '3sc3RLrpd17';
-        $method = 'aes-256-cbc';
-
-        $password = substr(hash('sha256', $password, true), 0, 32);
-        ;
-        $encrypted = base64_encode(openssl_encrypt($plaintext,
-            $method, $password, OPENSSL_RAW_DATA, (new Cryptor)->getIV()));
-
-        return $encrypted;
+        $result = '';
+        for($i=0; $i<strlen($plaintext); $i++) {
+            $char = substr($plaintext, $i, 1);
+            $keychar = substr($key, ($i % strlen($key))-1, 1);
+            $char = chr(ord($char)+ord($keychar));
+            $result.=$char;
+        }
+        return base64_encode($result);
     }
 
     public static function desEncrypt($encrypted)
     {
-        try{
-        $password = '3sc3RLrpd17';
-        $method = 'aes-256-cbc';
+        try {
+            $password = '3sc3RLrpd17';
+            $method = 'aes-256-cbc';
 
-        $password = substr(hash('sha256', $password, true), 0, 32);
+            $password = substr(hash('sha256', $password, true), 0, 32);
 
-        $decrypted = openssl_decrypt(base64_decode($encrypted), $method,
-            $password, OPENSSL_RAW_DATA, (new Cryptor)->getIV());
+            $decrypted = openssl_decrypt(base64_decode($encrypted), $method,
+                $password, OPENSSL_RAW_DATA, (new Cryptor)->getIV());
 
-        }catch (Exception $error){
+        } catch (Exception $error) {
 
             print_r($error);
         }
