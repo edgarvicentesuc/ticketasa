@@ -26,7 +26,7 @@ For general usage instructions, please see the main [Omnipay](https://github.com
 
 use Omnipay\Omnipay;
 try {
-    $gateway = Omnipay::create('PowerTranz_PWT');
+    $gateway = Omnipay::create('Ticketasa');
     $gateway
         ->setTestMode(true)  // false to use productions links  , true to use test links 
         ->setPWTId('xxxxxxxx') 
