@@ -4,7 +4,7 @@ namespace Omnipay\Ticketasa;
 class Constants
 {
     const DRIVER_NAME = "TicketAsa - Payment Gateway";
-    const PLATFORM_TA_UAT = 'http://5e6b-2803-d100-e240-9e9-848f-262f-ccc3-1244.ngrok.io/eventix';
+    const PLATFORM_TA_UAT = 'https://18bd-2803-d100-e240-9e9-d444-93f8-7ed4-8efe.ngrok.io/eventix';
     const PLATFORM_TA_PROD = 'https://credomatic.ticketasa.gt/eventix/';
 
     const CONFIG_KEY_PWTID = 'PWTId';
