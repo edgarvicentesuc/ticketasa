@@ -40,8 +40,8 @@ try {
         
 
     $cardData = [
-         'firstName' => 'Gabriel',
-         'LastName' => 'Arzu',
+         'firstName' => 'Gabriel', //optional 
+         'LastName' => 'Arzu', // optional
     ];
 
     $transactionData = [
