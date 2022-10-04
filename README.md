@@ -11,7 +11,7 @@ processing library for PHP 5.3+. This package implements TicketAsaGT 2.4 support
 Via Composer
 
 ``` bash
-$ composer require vincsis/omnipay-powertranz
+$ composer require vincsis/omnipay-ticketasa
 ```
 ## Gateway Operation Defaults
 This gateway driver operates in 3DS mode by default and requires a notify URL to be provided via the '**setNotifyURL**' method.
