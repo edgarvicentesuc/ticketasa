@@ -33,7 +33,8 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         $link = ($this->getTestMode() ? Constants::PLATFORM_TA_UAT : Constants::PLATFORM_TA_PROD)
             . '/' . ($this->getDiscount() ? "discount" : "normal") . "?data=" . $encripted;
 
-    //    redirecting using javascript
+//        print_r($link);
+   //     redirecting using javascript
         echo "<script type='text/javascript'>window.open('" . $link . "', '_parent')</script>";
     }
 
