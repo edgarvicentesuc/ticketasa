@@ -5,7 +5,7 @@ class Constants
 {
     const DRIVER_NAME = "TicketAsa - Payment Gateway";
     const PLATFORM_TA_UAT = 'https://ticketasa-cred.mypeopleapps.com/eventix';
-    const PLATFORM_TA_PROD = 'https://credomatic.ticketasa.gt/eventix/';
+    const PLATFORM_TA_PROD = 'https://credomatic.ticketasa.gt/eventix';
 
     const CONFIG_KEY_PWTID = 'PWTId';
     const CONFIG_KEY_PWTPWD = 'PWTpwd';
