@@ -27,8 +27,7 @@ class Gateway extends AbstractGateway implements ParametersInterface
      */
     public function purchase(array $options = []): \Omnipay\Common\Message\AbstractRequest
     {
-
-        return $this->createRequest("\Omnipay\Ticketasa\Message\Purchase3DS", $options);
+        return $this->createRequest("\Omnipay\Ticketasa\Message\HostedPage", $options);
     }
 
     public function setNotifyURL($url)
@@ -40,6 +39,17 @@ class Gateway extends AbstractGateway implements ParametersInterface
     public function getNotifyURL()
     {
         return $this->getParameter(Constants::CONFIG_KEY_NOTIFY_URL);
+    }
+
+    public function setReturnURL($url)
+    {
+        //$this->setReturnUrl($url);
+        return $this->setParameter(Constants::CONFIG_KEY_RETURN_URL, $url);
+    }
+
+    public function getReturnURL()
+    {
+        return $this->getParameter(Constants::CONFIG_KEY_RETURN_URL);
     }
 
 

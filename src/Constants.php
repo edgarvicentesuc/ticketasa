@@ -10,6 +10,7 @@ class Constants
     const CONFIG_KEY_PWTID = 'PWTId';
     const CONFIG_KEY_PWTPWD = 'PWTpwd';
     const CONFIG_KEY_NOTIFY_URL = 'notifyURL';
+    const CONFIG_KEY_RETURN_URL = 'returnURL';
     const GATEWAY_ORDER_IDENTIFIER_PREFIX = 'orderNumberPrefix';
     const GATEWAY_ORDER_IDENTIFIER_AUTOGEN = 'orderNumberAutoGen';
     const GATEWAY_ORDER_IDENTIFIER = 'orderIdentifier';

@@ -3,7 +3,7 @@
 namespace Omnipay\Ticketasa\Message;
 
 
-class Purchase3DS extends Authorize
+class Purchase3DS extends HostedPage
 {
     const PARAM_NOTIFY_URL = "notifyResponseURL";
     const PARAM_APPLY_DISCOUNT = "applyDiscount";

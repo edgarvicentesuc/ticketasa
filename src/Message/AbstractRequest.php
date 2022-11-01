@@ -2,16 +2,17 @@
 
 namespace Omnipay\Ticketasa\Message;
 
+use Omnipay\Ticketasa\Exception\InvalidResponseData;
 use Omnipay\Ticketasa\Support\Cryptor;
 use Omnipay\Ticketasa\Support\ParametersInterface;
 use Omnipay\Ticketasa\Constants;
-use Omnipay\Ticketasa\Exception\GatewayHTTPException;
 
 abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     implements ParametersInterface
 {
 
     protected $data = [];
+
 
     protected $PWTServices = [
         "Payment" => [
@@ -20,22 +21,33 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         "Discount" => [
             "api" => "discount",
         ]
-
     ];
 
     public function sendData($data)
     {
+        //  print_r($this->getNotifyURL());
 
-        $encripted = Cryptor::encrypt(json_encode($data),$this->getPWTPwd());
+        if (!empty($data["NotifyResponseURL"])) {
+            if (!empty($data["TransactionIdentifier"])) {
 
-//         if the test mode is on then use UAT link else link prod with droplet
-  //      if discount is true redirect to discount form else redirect to normal
-        $link = ($this->getTestMode() ? Constants::PLATFORM_TA_UAT : Constants::PLATFORM_TA_PROD)
-            . '/' . ($this->getDiscount() ? "discount" : "normal") . "?data=" . $encripted;
+                if (!empty($data["TotalAmount"]) && is_numeric($data["TotalAmount"])) {
 
-//        print_r($link);
-   //     redirecting using javascript
-        echo "<script type='text/javascript'>window.open('" . $link . "', '_parent')</script>";
+                    if (!empty($data[Constants::CONFIG_KEY_PWTID]) && !empty($data[Constants::CONFIG_KEY_PWTPWD])) {
+
+                        return $this->response = new HostedPageResponse($this, $data);
+
+                    } else {
+                        throw new InvalidResponseData("PowerTranz Credentials are invalid");
+                    }
+                } else {
+                    throw new InvalidResponseData("Total Amount is not valid");
+                }
+            } else {
+                throw new InvalidResponseData("Transaction Identifier is not valid");
+            }
+        } else {
+            throw new InvalidResponseData("Notify Url is not valid");
+        }
     }
 
     public function setPWTId($PWTID)
