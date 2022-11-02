@@ -15,6 +15,9 @@ class Constants
     const GATEWAY_ORDER_IDENTIFIER_AUTOGEN = 'orderNumberAutoGen';
     const GATEWAY_ORDER_IDENTIFIER = 'orderIdentifier';
     const CONFIG_APPLY_DISCOUNT = "Discount";
+    const CONFIG_TRANSACTION_IDENTIFIER = "TransactionIdentifierm";
     const CONFIG_PASSWORD = "PasswordEncrypt";
     const PASSWORD_SUFFLED= "peopleapps2021";
+
+    const CONFIG_KEY_TRANSID = 'PWTId';
 }

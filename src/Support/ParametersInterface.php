@@ -15,4 +15,8 @@ interface ParametersInterface
     public function setDiscount($value);
 
     public function getDiscount();
+
+    public function setTransactionIdB($vale);
+
+    public function getTransactionIdB();
 }

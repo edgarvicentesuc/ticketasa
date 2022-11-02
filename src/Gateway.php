@@ -30,6 +30,16 @@ class Gateway extends AbstractGateway implements ParametersInterface
         return $this->createRequest("\Omnipay\Ticketasa\Message\HostedPage", $options);
     }
 
+
+    /**
+     * @param array $options
+     * @return \Omnipay\Common\Message\AbstractRequest
+     */
+    public function fetchTransaction(array $options = []): \Omnipay\Common\Message\AbstractRequest
+    {
+        return $this->createRequest("\Omnipay\Ticketasa\Message\TransactionStatus", $options);
+    }
+
     public function setNotifyURL($url)
     {
         //$this->setReturnUrl($url);
@@ -74,7 +84,6 @@ class Gateway extends AbstractGateway implements ParametersInterface
     }
 
 
-
     public function setOrderNumberPrefix($value)
     {
         return $this->setParameter(Constants::GATEWAY_ORDER_IDENTIFIER_PREFIX, $value);
@@ -105,5 +114,15 @@ class Gateway extends AbstractGateway implements ParametersInterface
         return $this->getParameter(Constants::CONFIG_APPLY_DISCOUNT);
     }
 
+    public function getTransactionIdB()
+    {
+        return $this->getParameter(Constants::CONFIG_TRANSACTION_IDENTIFIER);
+    }
+
+    public function setTransactionIdB($ID)
+    {
+       // print_r($ID);
+        return $this->setParameter(Constants::CONFIG_TRANSACTION_IDENTIFIER, $ID);
+    }
 
 }
