@@ -10,7 +10,7 @@ class HostedPage extends AbstractRequest
     const PARAM_TOTAL_AMOUNT = 'TotalAmount';
     protected $TransactionDetails = [];
 
-    //const PARAM_TRANSACTION_IDENTIFIER = 'TransactionIdentifier';
+    const PARAM_TRANSACTION_IDENTIFIER = 'TransactionIdentifier';
     const PARAM_ORDER_IDENTIFIER = 'OrderIdentifier';
     const PARAM_FIRST_NAME = 'FirstName';
     const PARAM_LAST_NAME = 'LastName';
@@ -70,11 +70,11 @@ class HostedPage extends AbstractRequest
         $orderNumberPrefix = $this->getOrderNumberPrefix();
 
         //print_r($this->getTransactionIdB());
-
+       // print_r($this->getOrderNumberAutoGen());
        // print_r($this->getTransactionIdB());
         $transactionId = $this->getTransactionId();
 
-      //  print_r($this->getTransactionId());
+        //print_r(empty($transactionId));
 
         if (empty($transactionId) && $this->getOrderNumberAutoGen()) {
             $transactionId = $this->guidv4();
@@ -89,7 +89,7 @@ class HostedPage extends AbstractRequest
         //$this->setTransactionId($transactionId);
       //  $this->setOrderIdentifier($orderIdentifier);
 
-      //  $this->data[self::PARAM_TRANSACTION_IDENTIFIER] = $transactionId;
+       $this->data[self::PARAM_TRANSACTION_IDENTIFIER] = $transactionId;
         $this->data[self::PARAM_ORDER_IDENTIFIER] = $orderIdentifier;
     }
 

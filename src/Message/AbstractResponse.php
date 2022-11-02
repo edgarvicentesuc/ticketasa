@@ -20,7 +20,7 @@ abstract class AbstractResponse extends OmnipayAbstractResponse
 
     public function __construct(RequestInterface $request, $data)
     {
-        print_r($data);
+      //  print_r($data);
         // $data["TotalAmount"]="asdasdas";
 
 

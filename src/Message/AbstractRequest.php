@@ -78,7 +78,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     public function getTransactionIdB()
     {
-        print_r($this->getParameter(Constants::CONFIG_TRANSACTION_IDENTIFIER));
+      //  print_r($this->getParameter(Constants::CONFIG_TRANSACTION_IDENTIFIER));
         return $this->getParameter(Constants::CONFIG_TRANSACTION_IDENTIFIER);
     }
 
