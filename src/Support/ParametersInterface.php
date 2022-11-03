@@ -4,7 +4,7 @@ namespace Omnipay\Ticketasa\Support;
 
 interface ParametersInterface
 {
-    public function setPWTId($FACID);
+    public function setPWTId($PWTID);
 
     public function getPWTId();
 
@@ -16,7 +16,7 @@ interface ParametersInterface
 
     public function getDiscount();
 
-    public function setTransactionIdB($vale);
-
-    public function getTransactionIdB();
+//    public function setTransactionIdB($value);
+//
+//    public function getTransactionIdB();
 }

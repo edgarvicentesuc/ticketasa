@@ -7,7 +7,6 @@ namespace Omnipay\Ticketasa\Message;
 
 use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Common\Message\AbstractResponse as OmnipayAbstractResponse;
-use Omnipay\Ticketasa\Exception\InvalidResponseData;
 use Omnipay\Ticketasa\Constants;
 use Omnipay\Ticketasa\Support\Cryptor;
 
@@ -20,18 +19,24 @@ abstract class AbstractResponse extends OmnipayAbstractResponse
 
     public function __construct(RequestInterface $request, $data)
     {
-      //  print_r($data);
-        // $data["TotalAmount"]="asdasdas";
+        $this->request = $request;
+        $this->data = $data;
 
+        parent::__construct($request, $data);
 
-                    $this->request = $request;
-                    $this->data = $data;
+        print_r();
+        //print_r(json_decode($data->getBody()->getContents())->IsoResponseCode);
 
-                    parent::__construct($request, $data);
-
-                    $this->encript($data);
-                    // print_r($this->data);
-
+        switch ($request->getMessageClassName()) {
+            case "HostedPage":
+                $this->encript($this->data, $this->data[Constants::CONFIG_KEY_PWTPWD]);
+                break;
+            case "TransactionStatus":
+                $this->decodeGatewayResponse($this->data);
+                break;
+            default:
+                break;
+        }
 
     }
 
@@ -45,20 +50,28 @@ abstract class AbstractResponse extends OmnipayAbstractResponse
         return $this->data;
     }
 
+
     public function getEncript()
     {
         return $this->encripted;
     }
 
-    protected function encript($data)
+    protected function encript($data, $key)
     {
         unset($data[Constants::CONFIG_KEY_PWTID]);
         unset($data[Constants::CONFIG_KEY_PWTPWD]);
-
-        /// print_r($data);
-
-        $this->encripted = Cryptor::encrypt(json_encode($data), $this->data[Constants::CONFIG_KEY_PWTPWD]);
+        $this->encripted = Cryptor::encrypt(json_encode($data), $key);
     }
 
+    protected function decodeGatewayResponse($data): AbstractResponse
+    {
+        $httpResponse = $this->getData();
+
+        $json = stripslashes($httpResponse->getBody()->getContents());
+        $this->data = json_decode($json, true, 512, JSON_UNESCAPED_SLASHES);
+
+
+        return $this;
+    }
 
 }

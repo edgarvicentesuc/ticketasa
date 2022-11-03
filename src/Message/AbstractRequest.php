@@ -13,41 +13,82 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     protected $data = [];
 
+    protected $commonHeaders = [
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json'
+    ];
 
     protected $PWTServices = [
-        "Payment" => [
-            "api" => "normal",
+        "Purchase" => [
+            "request" => "HostedPage",
+            "response" => "HostedPageResponse"
         ],
-        "Discount" => [
-            "api" => "discount",
-        ]
+        "TransactionStatus" => [
+            "request" => "Transactions",
+            "response" => "TransactionStatusResponse"
+        ],
+        "Refund" => [
+            "request" => "refund",
+            "response" => "RefundPaymentResponse"
+        ],
     ];
 
     public function sendData($data)
     {
-        // print_r($this->getTransactionIdB());
 
-        if (!empty($data["NotifyResponseURL"])) {
-            if (!empty($data["TransactionIdentifier"])) {
+        //  print_r($data);
+        // print_r($this->getEndpoint() . $this->getMessageClassName());
 
-                if (!empty($data["TotalAmount"]) && is_numeric($data["TotalAmount"])) {
+        switch ($this->getMessageClassName()) {
 
-                    if (!empty($data[Constants::CONFIG_KEY_PWTID]) && !empty($data[Constants::CONFIG_KEY_PWTPWD])) {
+            case "HostedPage":
+                return $this->response = new HostedPageResponse($this, $data);
 
-                        return $this->response = new HostedPageResponse($this, $data);
+            case "TransactionStatus" :
 
-                    } else {
-                        throw new InvalidResponseData("PowerTranz Credentials are invalid");
-                    }
-                } else {
-                    throw new InvalidResponseData("Total Amount is not valid");
-                }
-            } else {
-                throw new InvalidResponseData("Transaction Identifier is not valid");
-            }
-        } else {
-            throw new InvalidResponseData("Notify Url is not valid");
+                $this->addCommonHeaders($data);
+                $requestBody = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+                $uri = $this->getEndpoint() . $this->PWTServices[$this->getMessageClassName()]["request"] . "/" . "4e895e54-3f5a-428c-ac30-1c0e7bd8ab86";
+
+                //print_r($uri);
+
+               // print_r($this->commonHeaders);
+
+                $httpResponse = $this->httpClient->request(
+                    "GET",
+                    $uri,
+                    $this->commonHeaders,
+                    null
+                );
+
+
+                return $this->response = new TransactionStatusResponse($this, $httpResponse);
+
+
+
+            default:
+                throw new InvalidResponseData($this->getMessageClassName());
         }
+    }
+
+    protected function addCommonHeaders($data): AbstractRequest
+    {
+        $this->commonHeaders['PowerTranz-PowerTranzId'] = $data["PWTId"];
+        $this->commonHeaders['PowerTranz-PowerTranzPassword'] = $data["PWTpwd"];
+        return $this;
+    }
+
+
+    protected function getEndpoint()
+    {
+        return ($this->getTestMode()) ? Constants::API_STAGING : Constants::API_PRODUCTION;
+    }
+
+    public function getMessageClassName()
+    {
+        $className = explode("\\", get_called_class());
+        return array_pop($className);
     }
 
     public function setPWTId($PWTID)
@@ -76,13 +117,14 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return json_encode($data);
     }
 
-    public function getTransactionIdB()
+
+    public function getTransactionId()
     {
-      //  print_r($this->getParameter(Constants::CONFIG_TRANSACTION_IDENTIFIER));
+        //  print_r($this->getParameter(Constants::CONFIG_TRANSACTION_IDENTIFIER));
         return $this->getParameter(Constants::CONFIG_TRANSACTION_IDENTIFIER);
     }
 
-    public function setTransactionIdB($value)
+    public function setTransactionId($value)
     {
         //  print_r($value);
         return $this->setParameter(Constants::CONFIG_TRANSACTION_IDENTIFIER, $value);
@@ -108,15 +150,16 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->getParameter(Constants::GATEWAY_ORDER_IDENTIFIER_PREFIX);
     }
 
-    public function setOrderNumberAutoGen($value)
-    {
-        return $this->setParameter(Constants::GATEWAY_ORDER_IDENTIFIER_AUTOGEN, $value);
-    }
 
-    public function getOrderNumberAutoGen()
-    {
-        return $this->getParameter(Constants::GATEWAY_ORDER_IDENTIFIER_AUTOGEN);
-    }
+//    public function setOrderNumberAutoGen($value)
+//    {
+//        return $this->setParameter(Constants::GATEWAY_ORDER_IDENTIFIER_AUTOGEN, $value);
+//    }
+//
+//    public function getOrderNumberAutoGen()
+//    {
+//        return $this->getParameter(Constants::GATEWAY_ORDER_IDENTIFIER_AUTOGEN);
+//    }
 
 
     public function setDiscount($value)

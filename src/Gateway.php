@@ -94,15 +94,6 @@ class Gateway extends AbstractGateway implements ParametersInterface
         return $this->getParameter(Constants::GATEWAY_ORDER_IDENTIFIER_PREFIX);
     }
 
-    public function setOrderNumberAutoGen($value)
-    {
-        return $this->setParameter(Constants::GATEWAY_ORDER_IDENTIFIER_AUTOGEN, $value);
-    }
-
-    public function getOrderNumberAutoGen()
-    {
-        return $this->getParameter(Constants::GATEWAY_ORDER_IDENTIFIER_AUTOGEN);
-    }
 
     public function setDiscount($value)
     {
@@ -114,15 +105,15 @@ class Gateway extends AbstractGateway implements ParametersInterface
         return $this->getParameter(Constants::CONFIG_APPLY_DISCOUNT);
     }
 
-    public function getTransactionIdB()
-    {
-        return $this->getParameter(Constants::CONFIG_TRANSACTION_IDENTIFIER);
-    }
-
-    public function setTransactionIdB($ID)
-    {
-       // print_r($ID);
-        return $this->setParameter(Constants::CONFIG_TRANSACTION_IDENTIFIER, $ID);
-    }
+//    public function getTransactionIdB()
+//    {
+//        return $this->getParameter(Constants::CONFIG_TRANSACTION_IDENTIFIER);
+//    }
+//
+//    public function setTransactionIdB($value)
+//    {
+//       // print_r($ID);
+//        return $this->setParameter(Constants::CONFIG_TRANSACTION_IDENTIFIER, $value);
+//    }
 
 }

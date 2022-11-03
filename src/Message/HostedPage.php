@@ -3,6 +3,7 @@
 namespace Omnipay\Ticketasa\Message;
 
 use Omnipay\Ticketasa\Constants;
+use Omnipay\Ticketasa\Exception\InvalidResponseData;
 
 class HostedPage extends AbstractRequest
 {
@@ -20,11 +21,13 @@ class HostedPage extends AbstractRequest
 
     public function getData()
     {
+
         $this->setTransactionDetails();
         $this->setCardDetails();
         $this->setCredentials();
         $this->setUrls();
         $this->setTransaction();
+
 
         return $this->data;
     }
@@ -32,15 +35,33 @@ class HostedPage extends AbstractRequest
     protected function setTransactionDetails()
     {
 
-        $this->TransactionDetails[self::PARAM_ORDER_IDENTIFIER] = $this->getOrderIdentifier();
+        // $this->TransactionDetails[self::PARAM_ORDER_IDENTIFIER] = $this->getOrderIdentifier();
         $this->TransactionDetails[self::PARAM_TOTAL_AMOUNT] = $this->getAmount();
-
         $this->validateTransactionDetails();
+
     }
 
     protected function validateTransactionDetails()
     {
-        $this->data = $this->TransactionDetails;
+        if (!empty($this->getTransactionId())) {
+            if (!empty($this->getReturnUrl())) {
+                if (!empty($this->getAmount()) && is_numeric($this->getAmount())) {
+                    if (!empty($this->getPWTId()) && !empty($this->getPWTPwd())) {
+
+                        $this->data = $this->TransactionDetails;
+
+                    } else {
+                        throw new InvalidResponseData("PowerTranz Credentials are invalid");
+                    }
+                } else {
+                    throw new InvalidResponseData("Total Amount is not valid");
+                }
+            } else {
+                throw new InvalidResponseData("Notify Url is not valid");
+            }
+        } else {
+            throw new InvalidResponseData("Transaction Identifier is not valid");
+        }
     }
 
     protected function setCardDetails()
@@ -50,6 +71,7 @@ class HostedPage extends AbstractRequest
 
         $this->data[self::PARAM_FIRST_NAME] = $CreditCard->getFirstName();
         $this->data[self::PARAM_LAST_NAME] = $CreditCard->getLastName();
+
     }
 
     protected function setCredentials()
@@ -66,31 +88,9 @@ class HostedPage extends AbstractRequest
 
     protected function setTransaction()
     {
-       // print_r("hola");
         $orderNumberPrefix = $this->getOrderNumberPrefix();
-
-        //print_r($this->getTransactionIdB());
-       // print_r($this->getOrderNumberAutoGen());
-       // print_r($this->getTransactionIdB());
-        $transactionId = $this->getTransactionId();
-
-        //print_r(empty($transactionId));
-
-        if (empty($transactionId) && $this->getOrderNumberAutoGen()) {
-            $transactionId = $this->guidv4();
-            $orderIdentifier = $transactionId;
-        }
-
-        //example TICKET-ASA-000000000001
-        if (!empty($orderNumberPrefix) && !empty($transactionId))
-            $orderIdentifier = $orderNumberPrefix . "-" . $transactionId;
-
-
-        //$this->setTransactionId($transactionId);
-      //  $this->setOrderIdentifier($orderIdentifier);
-
-       $this->data[self::PARAM_TRANSACTION_IDENTIFIER] = $transactionId;
-        $this->data[self::PARAM_ORDER_IDENTIFIER] = $orderIdentifier;
+        $this->data[self::PARAM_TRANSACTION_IDENTIFIER] = $this->getTransactionId();
+        $this->data[self::PARAM_ORDER_IDENTIFIER] = !empty($this->getTransactionId()) ? $orderNumberPrefix . "-" . $this->getTransactionId() : null;
     }
 
 

@@ -1,0 +1,40 @@
+<?php
+
+namespace Omnipay\Ticketasa\Message;
+
+class TransactionStatusResponse extends AbstractResponse
+{
+    public function isSuccessful()
+    {
+        if (!empty($this->getData()["IsoResponseCode"] == "00")) return true;
+
+        return false;
+    }
+
+    public function getTransactionId()
+    {
+        return $this->getData()["TransactionIdentifier"];
+    }
+
+
+    public function getTotalAmount()
+    {
+        return $this->getData()["TotalAmount"];
+    }
+
+    public function getAuthorizationCode()
+    {
+        return $this->getData()["AuthorizationCode"];
+    }
+
+    public function getLastCaptureDateTime()
+    {
+        return $this->getData()["OrderSummary"]["LastCaptureDateTime"];
+    }
+
+    public function getTransactionDateTime()
+    {
+        return $this->getData()["TransactionDateTime"];
+    }
+
+}
