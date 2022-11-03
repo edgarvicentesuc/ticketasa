@@ -5,9 +5,7 @@
     "require": {
 	"php": "^7.2",
         "omnipay/common": "^3",
-	    "league/iso3166": "~2.1.0",
-        "ext-openssl": "*",
-        "ext-json": "*"
+	    "league/iso3166": "~2.1.0"
     },
     "license": "MIT",
     "autoload": {
