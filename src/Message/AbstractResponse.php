@@ -34,6 +34,9 @@ abstract class AbstractResponse extends OmnipayAbstractResponse
             case "TransactionStatus":
                 $this->decodeGatewayResponse($this->data);
                 break;
+            case "RefundPayment":
+                $this->decodeGatewayResponse($this->data);
+                break;
             default:
                 break;
         }

@@ -27,7 +27,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             "request" => "Transactions",
             "response" => "TransactionStatusResponse"
         ],
-        "Refund" => [
+        "RefundPayment" => [
             "request" => "refund",
             "response" => "RefundPaymentResponse"
         ],
@@ -47,13 +47,9 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             case "TransactionStatus" :
 
                 $this->addCommonHeaders($data);
-                $requestBody = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
-                $uri = $this->getEndpoint() . $this->PWTServices[$this->getMessageClassName()]["request"] . "/" . "4e895e54-3f5a-428c-ac30-1c0e7bd8ab86";
 
-                //print_r($uri);
-
-               // print_r($this->commonHeaders);
+                $uri = $this->getEndpoint() . $this->PWTServices[$this->getMessageClassName()]["request"] . "/" . $data["TransactionIdentifier"];
 
                 $httpResponse = $this->httpClient->request(
                     "GET",
@@ -65,7 +61,25 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
                 return $this->response = new TransactionStatusResponse($this, $httpResponse);
 
+            case "RefundPayment" :
+                $this->addCommonHeaders($data);
+                unset($data[Constants::CONFIG_KEY_PWTID]);
+                unset($data[Constants::CONFIG_KEY_PWTPWD]);
 
+                $requestBody = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+                $uri = $this->getEndpoint() . $this->PWTServices[$this->getMessageClassName()]["request"];
+
+                $httpResponse = $this->httpClient->request(
+                    "POST",
+                    $uri,
+                    $this->commonHeaders,
+                    $requestBody
+                );
+
+                return $this->response = new RefundPaymentResponse($this, $httpResponse);
+
+                break;
 
             default:
                 throw new InvalidResponseData($this->getMessageClassName());

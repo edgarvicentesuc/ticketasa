@@ -40,6 +40,16 @@ class Gateway extends AbstractGateway implements ParametersInterface
         return $this->createRequest("\Omnipay\Ticketasa\Message\TransactionStatus", $options);
     }
 
+
+    /**
+     * @param array $options
+     * @return \Omnipay\Common\Message\AbstractRequest
+     */
+    public function refund(array $options = []): \Omnipay\Common\Message\AbstractRequest
+    {
+        return $this->createRequest("\Omnipay\Ticketasa\Message\RefundPayment", $options);
+    }
+
     public function setNotifyURL($url)
     {
         //$this->setReturnUrl($url);
