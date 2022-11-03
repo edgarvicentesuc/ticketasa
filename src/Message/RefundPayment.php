@@ -31,7 +31,7 @@ class RefundPayment extends AbstractRequest
     public function getData()
     {
         $this->TransactionDetails[self::PARAM_REFUND] = true;
-        $this->TransactionDetails[self::PARAM_IDENTIFIER] = $this->getTransactionId();
+        $this->TransactionDetails[self::PARAM_IDENTIFIER] = $this->getTransactionId(); // str_replace("-", "", $this->guidv4()) ;
         $this->TransactionDetails[self::PARAM_TOTAL_AMOUNT] = $this->getAmount();
         $this->TransactionDetails[self::PARAM_CURRENCYCODE] = "320";
         $this->TransactionDetails[self::PARAM_SOURCE][self::PARAM_SOURCE_CARD_PRESENT] = false;
@@ -43,7 +43,7 @@ class RefundPayment extends AbstractRequest
         $this->TransactionDetails[self::PARAM_SOURCE][self::PARAM_SOURCE_CARD_MK] = "";
         $this->TransactionDetails[self::PARAM_TERMINAL] = "";
         $this->TransactionDetails[self::PARAM_TERMINAL_SERIAL] = "";
-        $this->TransactionDetails[self::PARAM_EXTERNAL_IDENTIFIER] = str_replace("-", "", $this->guidv4());
+        $this->TransactionDetails[self::PARAM_EXTERNAL_IDENTIFIER] = $this->getTransactionId();
         $this->TransactionDetails[self::PARAM_ADDRESS] = false;
 
 
@@ -62,10 +62,11 @@ class RefundPayment extends AbstractRequest
                     $this->data = $this->TransactionDetails;
 
                 } else {
-                    throw new InvalidResponseData("Total Amount is not valid");
+                    throw new InvalidResponseData("PowerTranz Credentials are invalid");
                 }
             } else {
-                throw new InvalidResponseData("PowerTranz Credentials are invalid");
+                throw new InvalidResponseData("Total Amount is not valid");
+
             }
         } else {
             throw new InvalidResponseData("Transaction Identifier is not valid");

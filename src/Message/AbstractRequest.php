@@ -70,6 +70,9 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
                 $uri = $this->getEndpoint() . $this->PWTServices[$this->getMessageClassName()]["request"];
 
+
+//                  print_r($requestBody);
+
                 $httpResponse = $this->httpClient->request(
                     "POST",
                     $uri,
@@ -88,8 +91,8 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     protected function addCommonHeaders($data): AbstractRequest
     {
-        $this->commonHeaders['PowerTranz-PowerTranzId'] = $data["PWTId"];
-        $this->commonHeaders['PowerTranz-PowerTranzPassword'] = $data["PWTpwd"];
+        $this->commonHeaders['PowerTranz-PowerTranzId'] = $this->getPWTId();
+        $this->commonHeaders['PowerTranz-PowerTranzPassword'] = $this->getPWTPwd();
         return $this;
     }
 
@@ -130,6 +133,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     {
         return json_encode($data);
     }
+
 
 
     public function getTransactionId()

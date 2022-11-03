@@ -44,17 +44,21 @@ class HostedPage extends AbstractRequest
     protected function validateTransactionDetails()
     {
         if (!empty($this->getTransactionId())) {
-            if (!empty($this->getReturnUrl())) {
-                if (!empty($this->getAmount()) && is_numeric($this->getAmount())) {
-                    if (!empty($this->getPWTId()) && !empty($this->getPWTPwd())) {
+            if (!empty($this->getNotifyUrl())) {
+                if (!empty($this->getReturnUrl())) {
+                    if (!empty($this->getAmount()) && is_numeric($this->getAmount())) {
+                        if (!empty($this->getPWTId()) && !empty($this->getPWTPwd())) {
 
-                        $this->data = $this->TransactionDetails;
+                            $this->data = $this->TransactionDetails;
 
+                        } else {
+                            throw new InvalidResponseData("PowerTranz Credentials are invalid");
+                        }
                     } else {
-                        throw new InvalidResponseData("PowerTranz Credentials are invalid");
+                        throw new InvalidResponseData("Total Amount is not valid");
                     }
                 } else {
-                    throw new InvalidResponseData("Total Amount is not valid");
+                    throw new InvalidResponseData("Return Url is not valid");
                 }
             } else {
                 throw new InvalidResponseData("Notify Url is not valid");
@@ -69,9 +73,13 @@ class HostedPage extends AbstractRequest
         $CardDetails = [];
         $CreditCard = $this->getCard();
 
-        $this->data[self::PARAM_FIRST_NAME] = $CreditCard->getFirstName();
-        $this->data[self::PARAM_LAST_NAME] = $CreditCard->getLastName();
-
+        if (isset($CreditCard)) {
+            $this->data[self::PARAM_FIRST_NAME] = $CreditCard->getFirstName();
+            $this->data[self::PARAM_LAST_NAME] = $CreditCard->getLastName();
+        } else {
+            $this->data[self::PARAM_FIRST_NAME] = "";
+            $this->data[self::PARAM_LAST_NAME] = "";
+        }
     }
 
     protected function setCredentials()
@@ -88,9 +96,8 @@ class HostedPage extends AbstractRequest
 
     protected function setTransaction()
     {
-        $orderNumberPrefix = $this->getOrderNumberPrefix();
         $this->data[self::PARAM_TRANSACTION_IDENTIFIER] = $this->getTransactionId();
-        $this->data[self::PARAM_ORDER_IDENTIFIER] = !empty($this->getTransactionId()) ? $orderNumberPrefix . "-" . $this->getTransactionId() : null;
+        $this->data[self::PARAM_ORDER_IDENTIFIER] = !empty($this->getTransactionId()) ? Constants::PREFIX_ORDER . $this->getTransactionId() : null;
     }
 
 

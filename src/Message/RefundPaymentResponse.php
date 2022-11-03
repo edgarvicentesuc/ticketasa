@@ -42,4 +42,24 @@ class RefundPaymentResponse extends AbstractResponse
         return $this->getData()["OriginalTrxnIdentifier"];
     }
 
+    public function getErrorCode()
+    {
+        return $this->getData()["Errors"][0]["Code"];
+    }
+
+    public function getErrorMessage()
+    {
+        return $this->getData()["Errors"][0]["Message"];
+    }
+
+    public function getIsoResponseCode()
+    {
+        return $this->getData()["IsoResponseCode"];
+    }
+
+    public function getResponseMessage()
+    {
+        return $this->getData()["ResponseMessage"];
+    }
+
 }

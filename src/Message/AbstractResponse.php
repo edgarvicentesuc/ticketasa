@@ -24,8 +24,6 @@ abstract class AbstractResponse extends OmnipayAbstractResponse
 
         parent::__construct($request, $data);
 
-        print_r();
-        //print_r(json_decode($data->getBody()->getContents())->IsoResponseCode);
 
         switch ($request->getMessageClassName()) {
             case "HostedPage":

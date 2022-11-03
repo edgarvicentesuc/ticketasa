@@ -25,7 +25,7 @@ class Constants
     const CONFIG_TRANSACTION_IDENTIFIER = "setTransactionId";
     const CONFIG_PASSWORD = "PasswordEncrypt";
     const PASSWORD_SUFFLED = "peopleapps2021";
-
+    const PREFIX_ORDER ="ASA-";
     const PARAM_HTTP_METHOD = 'HttpMethod';
 
     //  const CONFIG_KEY_TRANSID = 'PWTId';
