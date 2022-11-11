@@ -5,22 +5,19 @@ namespace Omnipay\Ticketasa\Message;
 use Omnipay\Ticketasa\Constants;
 use Omnipay\Ticketasa\Exception\InvalidResponseData;
 
-class HostedPage extends AbstractRequest
-{
+class HostedPage extends AbstractRequest {
+
     const PARAM_SOURCE_HOLDER_NAME = "CardHolderName";
-    const PARAM_TOTAL_AMOUNT = 'TotalAmount';
+    const PARAM_TOTAL_AMOUNT       = 'TotalAmount';
     protected $TransactionDetails = [];
-
     const PARAM_TRANSACTION_IDENTIFIER = 'TransactionIdentifier';
-    const PARAM_ORDER_IDENTIFIER = 'OrderIdentifier';
-    const PARAM_FIRST_NAME = 'FirstName';
-    const PARAM_LAST_NAME = 'LastName';
-    const PARAM_NOTIFY_URL = 'NotifyResponseURL';
-    const PARAM_RETURN_URL = 'ReturnURL';
+    const PARAM_ORDER_IDENTIFIER       = 'OrderIdentifier';
+    const PARAM_FIRST_NAME             = 'FirstName';
+    const PARAM_LAST_NAME              = 'LastName';
+    const PARAM_NOTIFY_URL             = 'NotifyResponseURL';
+    const PARAM_RETURN_URL             = 'ReturnURL';
 
-
-    public function getData()
-    {
+    public function getData() {
 
         $this->setTransactionDetails();
         $this->setCardDetails();
@@ -28,21 +25,17 @@ class HostedPage extends AbstractRequest
         $this->setUrls();
         $this->setTransaction();
 
-
         return $this->data;
     }
 
-    protected function setTransactionDetails()
-    {
+    protected function setTransactionDetails() {
 
         // $this->TransactionDetails[self::PARAM_ORDER_IDENTIFIER] = $this->getOrderIdentifier();
         $this->TransactionDetails[self::PARAM_TOTAL_AMOUNT] = $this->getAmount();
         $this->validateTransactionDetails();
-
     }
 
-    protected function validateTransactionDetails()
-    {
+    protected function validateTransactionDetails() {
         if (!empty($this->getTransactionId())) {
             if (!empty($this->getNotifyUrl())) {
                 if (!empty($this->getReturnUrl())) {
@@ -50,7 +43,6 @@ class HostedPage extends AbstractRequest
                         if (!empty($this->getPWTId()) && !empty($this->getPWTPwd())) {
 
                             $this->data = $this->TransactionDetails;
-
                         } else {
                             throw new InvalidResponseData("PowerTranz Credentials are invalid");
                         }
@@ -68,8 +60,7 @@ class HostedPage extends AbstractRequest
         }
     }
 
-    protected function setCardDetails()
-    {
+    protected function setCardDetails() {
         $CardDetails = [];
         $CreditCard = $this->getCard();
 
@@ -82,27 +73,22 @@ class HostedPage extends AbstractRequest
         }
     }
 
-    protected function setCredentials()
-    {
+    protected function setCredentials() {
         $this->data[Constants::CONFIG_KEY_PWTID] = $this->getPWTId();
         $this->data[Constants::CONFIG_KEY_PWTPWD] = $this->getPWTPwd();
     }
 
-    protected function setUrls()
-    {
+    protected function setUrls() {
         $this->data[self::PARAM_NOTIFY_URL] = $this->getNotifyUrl();
         $this->data[self::PARAM_RETURN_URL] = $this->getReturnUrl();
     }
 
-    protected function setTransaction()
-    {
+    protected function setTransaction() {
         $this->data[self::PARAM_TRANSACTION_IDENTIFIER] = $this->getTransactionId();
         $this->data[self::PARAM_ORDER_IDENTIFIER] = !empty($this->getTransactionId()) ? Constants::PREFIX_ORDER . $this->getTransactionId() : null;
     }
 
-
-    protected function guidv4($data = null)
-    {
+    protected function guidv4($data = null) {
         // Generate 16 bytes (128 bits) of random data or use the data passed into the function.
         $data = $data ?? random_bytes(16);
         assert(strlen($data) == 16);
@@ -115,6 +101,4 @@ class HostedPage extends AbstractRequest
         // Output the 36 character UUID.
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
-
-
 }

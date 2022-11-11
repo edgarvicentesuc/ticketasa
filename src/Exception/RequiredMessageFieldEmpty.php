@@ -1,6 +1,5 @@
 <?php
 namespace Omnipay\Ticketasa\Exception;
-class RequiredMessageFieldEmpty extends \Exception
-{
+class RequiredMessageFieldEmpty extends \Exception{
 
 }

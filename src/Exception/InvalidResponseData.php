@@ -2,7 +2,6 @@
 
 namespace Omnipay\Ticketasa\Exception;
 
-class InvalidResponseData extends \Exception
-{
+class InvalidResponseData extends \Exception{
 
 }
