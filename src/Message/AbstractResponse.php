@@ -16,6 +16,7 @@ abstract class AbstractResponse extends OmnipayAbstractResponse {
     const AUTHORIZE_BILLING_DETAILS                 = "BillingDetails";
     const AUTHORIZE_FRAUD_CONTROL_RESULTS           = "FraudControlResults";
     protected $encripted;
+    protected $jsonContent;
 
     public function __construct(RequestInterface $request, $data) {
         $this->request = $request;
@@ -50,6 +51,17 @@ abstract class AbstractResponse extends OmnipayAbstractResponse {
         return $this->encripted;
     }
 
+    //new method to save the payload from bank server, parsed to json
+    public function getJsonContent() {
+        return $this->jsonContent;
+    }
+
+
+    // new method to check the httpcode
+    public function getStatusCode() {
+        return $this->data->getStatusCode();
+    }
+
     protected function encript($data, $key) {
         unset($data[Constants::CONFIG_KEY_PWTID]);
         unset($data[Constants::CONFIG_KEY_PWTPWD]);
@@ -57,10 +69,10 @@ abstract class AbstractResponse extends OmnipayAbstractResponse {
     }
 
     protected function decodeGatewayResponse($data): AbstractResponse {
-        $httpResponse = $this->getData();
+       // $httpResponse = $this->getData();
 
-        $json = stripslashes($httpResponse->getBody()->getContents());
-        $this->data = json_decode($json, true, 512, JSON_UNESCAPED_SLASHES);
+        $json = stripslashes($this->getData()->getBody()->getContents());
+        $this->jsonContent = json_decode($json, true, 512, JSON_UNESCAPED_SLASHES);
 
         return $this;
     }
