@@ -4,10 +4,10 @@ namespace Omnipay\Ticketasa;
 
 class Constants {
 
-    const API_STAGING                      = 'https://staging.ptranz.com/api/';
-    const API_PRODUCTION                   = 'https://gateway.ptranz.com/api/';
-    const SPI_STAGING                      = 'https://staging.ptranz.com/api/spi/';
-    const SPI_PRODUCTION                   = 'https://gateway.ptranz.com/api/spi/';
+    const API_STAGING                      = 'https://pwt-asa.mypeopleapps.com/api/';
+    const API_PRODUCTION                   = 'https://powertranz.ticketasa.gt/api/';
+    const SPI_STAGING                      = 'https://pwt-asa.mypeopleapps.com/api/spi/';
+    const SPI_PRODUCTION                   = 'https://powertranz.ticketasa.gt/api/spi/';
     const DRIVER_NAME                      = "TicketAsa - Payment Gateway";
     const PLATFORM_TA_UAT                  = 'https://ticketasa-cred.mypeopleapps.com/eventix';
     const PLATFORM_TA_PROD                 = 'https://credomatic.ticketasa.gt/eventix';
